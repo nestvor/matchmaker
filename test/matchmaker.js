@@ -1,16 +1,17 @@
-var expect    = require("chai").expect;
-var matchmaker = require("../app/matchmaker");
+const expect = require('chai').expect
+const matchmaker = require('../matchmaking/matchmakingController')
 
-describe("Matchmaker", function() {
-    describe("List all tasks", function() {
-        it("lists all tasks", function() {
-            var res = {};
-            res.json = function(json) { return json; };
+describe('Matchmaker', function () {
+  describe('List all tasks', function () {
+    it('lists all tasks', function () {
+      let res = {}
+      res.json = function (json) {
+        return json
+      }
 
-            var drek = matchmaker.list_all_tasks(null, res);
+      let drek = matchmaker.list_all_tasks(null, res)
 
-            expect(drek).to.equal({ message: 'Task successfully deleted' });
-        });
-    });
-
-});
+      expect(drek).to.equal({message: 'Task successfully deleted'})
+    })
+  })
+})

@@ -2,10 +2,10 @@
   "name": "matchmaker",
   "version": "0.0.1",
   "description": "Matchmaking service",
-  "main": "index.js",
+  "main": "app/server.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec",
-    "start": "nodemon app/index.js"
+    "test": "standard && mocha --reporter spec",
+    "start": "nodemon %NODE_DEBUG_OPTION% app.js"
   },
   "repository": {
     "type": "git",
@@ -23,12 +23,21 @@
   },
   "homepage": "https://github.com/nestvor/matchmaker#readme",
   "devDependencies": {
-    "nodemon": "^1.17.2"
+    "nodemon": "^1.17.2",
+    "standard": "^11.0.1"
   },
   "dependencies": {
+    "async": "^2.6.0",
     "chai": "^4.1.2",
+    "diskdb": "^0.1.17",
     "express": "^4.16.3",
     "mocha": "^5.0.4",
+    "random-datetime": "^1.0.1",
     "sinon": "^4.4.6"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ]
   }
 }
