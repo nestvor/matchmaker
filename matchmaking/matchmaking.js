@@ -23,24 +23,39 @@ const playerRepository = require('../model/playerRepository')
  * @param done the callback to call once finished
  */
 module.exports.findMatch = function (playerHandle, game, done) {
+  if (!playerHandle) {
+    let error = new Error('Player handle is required to perform matching')
+    error.name = constants.PLAYER_HANDLE_REQUIRED
+    done(error)
+    return
+  }
+
+  if (!game) {
+    let error = new Error('Game is required to perform matching')
+    error.name = constants.GAME_REQUIRED
+    done(error)
+    return
+  }
+
   async.auto({
-    playerByHandle: function (callback) {
+    playerByHandle: (callback) => {
       playerRepository.getPlayerByHandle(playerHandle, callback)
     },
-    checkPlayer: ['playerByHandle', function (results, callback) {
+    checkPlayer: ['playerByHandle', (results, callback) => {
       checkPlayerToMatch(results.playerByHandle, game, callback)
     }],
     allPlayers: playerRepository.getAllPlayers,
-    queue: ['checkPlayer', 'allPlayers', function (results, callback) {
+    queue: ['checkPlayer', 'allPlayers', (results, callback) => {
       buildQueue(results, game, callback)
     }],
-    match: ['queue', function (results, callback) {
+    match: ['queue', (results, callback) => {
       match(results.playerByHandle, game, results.queue, callback)
     }]
   },
-  function (err, results) {
+  (err, results) => {
     if (err) {
       done(err)
+      return
     }
 
     done(null, results.match)
@@ -80,7 +95,7 @@ function checkPlayerToMatch (playerToCheck, game, callback) {
 }
 
 /**
- * Builds a waiting player queue using the dataset of beat-em-up players.<br>
+ * Builds a waiting player queue using the dataset players.<br>
  * The queue is built up of the entire set, while omitting the player the matchmaking is being done for.<br>
  * This function applies random queue time timestamps, this enables preferential treatment of players that have
  * spent more time in the waiting queue
@@ -101,7 +116,7 @@ function buildQueue (results, game, callback) {
   let playerToMatch = results.playerByHandle
 
   // filters all the players with rankings in the specified game sans the user we are doing the matching for
-  allPlayers = allPlayers.filter(function (player) {
+  allPlayers = allPlayers.filter((player) => {
     return player.codename !== playerToMatch.codename &&
       player.rankings &&
       player.rankings.filter(function (gameRanking) {
@@ -119,7 +134,11 @@ function buildQueue (results, game, callback) {
 
   // since our data set does not include information about the amount of time players have spent in the queue, we apply
   // random queue times
-  allPlayers.forEach(function (queuePlayer) {
+  allPlayers.forEach((queuePlayer) => {
+    if (queuePlayer.queuedFrom) {
+      return
+    }
+
     let now = new Date()
     queuePlayer.queuedFrom = randomDate({
       year: now.getFullYear(),
@@ -179,7 +198,7 @@ function match (player, game, queue, callback) {
 function getPotentialMatches (player, game, queue, maxDifference) {
   let gameRanking = getPlayerGameRanking(player, game)
 
-  return queue.filter(function (queuePlayer) {
+  return queue.filter((queuePlayer) => {
     let queuePlayerRating = getPlayerGameRanking(queuePlayer, game)
     return Math.abs(gameRanking.totalScore - queuePlayerRating.totalScore) <= maxDifference
   })
@@ -204,7 +223,7 @@ function getPlayerGameRanking (player, game) {
   }
 
   // find the game ranking
-  let gameRankings = rankings.filter(function (gameRanking) {
+  let gameRankings = rankings.filter((gameRanking) => {
     return gameRanking.game === game
   })
 
@@ -232,7 +251,7 @@ function determineBestMatch (player, game, potentialMatches) {
   let bestMatch
 
   // iterate through the candidates and select the best one based on the calculated score
-  potentialMatches.forEach(function (potentialMatch) {
+  potentialMatches.forEach((potentialMatch) => {
     let score = scorePlayer(player, game, potentialMatch, scoringTimestamp)
 
     if (score > bestScore) {

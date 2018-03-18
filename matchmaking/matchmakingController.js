@@ -15,17 +15,21 @@ module.exports.findMatch = function (req, res) {
   let playerHandle = req.params.playerHandle
   if (!playerHandle) {
     res.status(400).send('Player handle is required!')
+    return
   }
 
   let game = req.query.game
   if (!game) {
     res.status(400).send('Game is required!')
+    return
   }
 
   // find a match!
   matchmaking.findMatch(playerHandle, game, function (err, data) {
     if (err) {
       switch (err.name) {
+        case constants.PLAYER_HANDLE_REQUIRED:
+        case constants.GAME_REQUIRED:
         case constants.PLAYER_WITH_HANDLE_NOT_FOUND:
         case constants.ALL_PLAYERS_LIST_EMPTY:
           res.status(400).send(err.message)

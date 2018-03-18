@@ -6,6 +6,9 @@
 let config = {}
 
 config.port = process.env.PORT || 3000
+config.db = {}
+config.db.path = process.env.DB_PATH || 'db'
+config.db.collection = process.env.DB_COLLECTION || 'players'
 config.maxPotentialMatchRetries = process.env.MAX_MATCH_RETRY || 5
 config.skillDifferencePerRetry = process.env.SKILL_DIFFERENCE_PER_RETRY || 1000
 config.queueTimeWeight = process.env.QUEUE_TIME_WEIGHT || 2

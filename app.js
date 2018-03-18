@@ -11,6 +11,8 @@ const app = express()
 // get the routes
 require('./routes')(app)
 
-app.listen(config.port)
+const server = app.listen(config.port)
 
 console.log('Matchmaker RESTful API service started on: ' + config.port)
+
+module.exports = server

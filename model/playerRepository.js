@@ -3,8 +3,9 @@
  */
 'use strict'
 
+const config = require('../config')
 let db = require('diskdb')
-db = db.connect('db', ['players'])
+db = db.connect(config.db.path, [config.db.collection])
 
 /**
  * Finds the player with the specified handle in the repository.

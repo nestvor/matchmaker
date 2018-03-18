@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/nestvor/matchmaker#readme",
   "devDependencies": {
-    "nodemon": "^1.17.2",
+     "nodemon": "^1.17.2",
+    "request": "^2.85.0",
     "standard": "^11.0.1"
   },
   "dependencies": {
