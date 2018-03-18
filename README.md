@@ -2,6 +2,8 @@
 
 A simple service for matching queued players for 1v1 duels!
 
+The architectural proposal can be found here: [Architectural proposal](https://github.com/nestvor/matchmaker/blob/master/docs/microservices_architecture.html)
+
 ## Installing
 
 Run the following in the root folder:
