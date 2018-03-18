@@ -108,8 +108,10 @@ function setRequestResponseStubs () {
       res.message = message
     },
     json: (json) => {
-      res.responseStatus = 200
-      res.json = json
+      if (json) {
+        res.responseStatus = 200
+        res.json = json
+      }
     },
     status: (responseStatus) => {
       res.responseStatus = responseStatus

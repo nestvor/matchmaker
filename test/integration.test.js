@@ -13,6 +13,7 @@ describe('Integration test', () => {
   let server
 
   before(function () {
+    reconnectDataSource()
     server = require('../app')
   })
 
@@ -29,3 +30,13 @@ describe('Integration test', () => {
     })
   })
 })
+
+/**
+ * Ensures that the integration test will use the larger data set
+ */
+function reconnectDataSource () {
+  delete require.cache[require.resolve('../model/playerRepository')]
+  let config = require('../config')
+  config.db.path = 'db'
+  require('../model/playerRepository')
+}
