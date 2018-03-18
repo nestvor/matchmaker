@@ -69,6 +69,6 @@ This project is licensed under the Apache License - see the [LICENSE.md](LICENSE
 
 ## Acknowledgments
 
-* [Shoryuken Rankings](http://rank.shoryuken.com/api/index)
-* Coffee
-* Pizza
+* [Shoryuken Rankings](http://rank.shoryuken.com/api/index) - for the player database used in the service
+* **Kenneth O'Connor** - for the HTML styling
+* **Coffee and Pizza** - for your unwavering support
